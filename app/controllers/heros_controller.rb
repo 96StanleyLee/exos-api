@@ -7,14 +7,9 @@ class HerosController < ApplicationController
 
     def show 
         hero_name = params[:id].capitalize()
-        hero = Hero.where(name: hero_name)
-        if hero.length == 0 
-            render json: {"error": "Hero not found"}
-        else
-            render json: hero
-        end
-
-
+        fz = FuzzyMatch.new(Hero.all, :read => :name)
+        hero = fz.find("#{hero_name}")
+        render json: hero
     end 
 
 
